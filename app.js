@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
-import { getFirestore, getDocs, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore.js";
+import { getFirestore, getDocs, collection, query, where, addDoc  } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore.js";
 import { irregulars } from "./data.js";
 
 // Your web app's Firebase configuration
@@ -19,32 +19,59 @@ const app = initializeApp(firebaseConfig);
 // Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
 
-const querySnapshot = await getDocs(collection(db, "verbs"));
-querySnapshot.forEach((doc) => {
-  console.log(`${doc.id} => ${doc.data().base}`);
+
+
+document.getElementById("send").addEventListener("click", function () {
+  let verb = document.getElementById("verb").value;
+  //getAllDocs();
+  getDocForEs(verb);
+  //sendData();
 });
 
-async function sendData(obj) {
+async function getAllDocs() {
+  const querySnapshot = await getDocs(collection(db, "irregulars"));
+  querySnapshot.forEach((doc) => {
+    console.log(`${doc.id} => ${doc.data().base}`);
+  });
+}
 
-  console.log("enviando");
+async function getDocForEs(verb){
 
-  try {
-    const docRef = await addDoc(collection(db, "verbs"), obj);
-    console.log("Document written with ID: ", docRef.id);
-  } catch (e) {
-    console.error("Error adding document: ", e);
+  if(verb == '') {
+    alert("Debe ingresar un verbo");
+    return;
+  }
+
+  console.log(`Consultando ${verb}...`);
+
+  const irregularsCollection = collection(db, "irregulars");
+  const q = query(irregularsCollection, where("es", "array-contains", verb.toLowerCase()));
+
+  const querySnapshot = await getDocs(q);
+
+  if(querySnapshot.size > 0){
+    querySnapshot.forEach((doc) => {
+      console.log(`${doc.id} => ${JSON.stringify(doc.data())}`);
+    });
+  } else{
+    console.log(`No se encontro ${verb}`);
   }
 }
 
-document.getElementById("send").addEventListener("click", function () {
+let count = 0;
 
-  irregulars.forEach(function(verb){
-    let obj = {
-      es: verb.es,
-      base: verb.base,
-      pastSimple: verb.pastSimple,
-      pastParticple: verb.pastParticiple,
+async function sendData() {
+
+    console.log("enviando");
+
+    try {
+        const docRef = await addDoc(collection(db, "irregulars"), irregulars[count]);
+        console.log("Document written with ID: ", docRef.id);
+        count++;
+
+        if (count <= irregulars.length) sendData();
+        else console.log("Guardado Finalizado");
+    } catch (e) {
+        console.error("Error adding document: ", e);
     }
-    sendData(obj);
-  });
-});
+}
