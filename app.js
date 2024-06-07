@@ -40,12 +40,19 @@ async function inicio() {
 }
 
 function initEventListeners() {
-  document.getElementById("send").addEventListener("click", function () {
-    let verb = document.getElementById("verb").value;
-  });
+  // document.getElementById("send").addEventListener("click", function () {
+  //   let verb = document.getElementById("verb").value;
+  // });
 
-  document.getElementById("verb").addEventListener("keyup", function () {
-    getVerb(this.value.toLowerCase());
+  $("#verb").on("keyup", function () {
+    let data = getVerb(this.value.toLowerCase()).data;
+    console.log(data);
+
+    $("#data").append($("<p>").html(`Verb: <b>${data.base}</b>`));
+    $("#data").append($("<p>").html(`Simple Past: <b>${data.pastSimple}</b>`));
+    $("#data").append(
+      $("<p>").html(`Participle Past: <b>${data.pastParticiple}</b>`)
+    );
   });
 }
 
@@ -62,16 +69,7 @@ function getVerb(verb) {
     //console.log(objVerb.data.es);
   });
 
-  if (prueba) console.log(prueba.data);
-
-  return;
-
-  dataVerbs.find(function (objVerb) {
-    objVerb.es.find(function (item) {
-      item == verb;
-    });
-  });
-  debugger;
+  if (prueba) return prueba;
 }
 
 inicio();
