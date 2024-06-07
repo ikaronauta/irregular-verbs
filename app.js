@@ -9,6 +9,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore.js";
 import { getAllDocs } from "./modules/fb/firebase.js";
 import { firebaseConfig } from "./data/fbdata.js";
+import { existLocalStorage, getVerb } from "./modules/core/main.js";
 
 let date;
 let dataVerbs = [];
@@ -37,39 +38,45 @@ async function inicio() {
     localStorage.setItem(`${date}-data`, JSON.stringify(dataVerbs));
     console.log("Información cargada con exito !!!");
   }
+
+  main();
 }
 
 function initEventListeners() {
-  // document.getElementById("send").addEventListener("click", function () {
-  //   let verb = document.getElementById("verb").value;
-  // });
-
   $("#verb").on("keyup", function () {
-    let data = getVerb(this.value.toLowerCase()).data;
+    let data = getVerb(dataVerbs, this.value.toLowerCase());
     console.log(data);
 
-    $("#data").append($("<p>").html(`Verb: <b>${data.base}</b>`));
-    $("#data").append($("<p>").html(`Simple Past: <b>${data.pastSimple}</b>`));
+    if (!data) return;
+
+    $("#data").empty();
+    $("#data").append($("<p>").html(`Verb: <b>${data.data.base}</b>`));
     $("#data").append(
-      $("<p>").html(`Participle Past: <b>${data.pastParticiple}</b>`)
+      $("<p>").html(`Simple Past: <b>${data.data.pastSimple}</b>`)
+    );
+    $("#data").append(
+      $("<p>").html(`Participle Past: <b>${data.data.pastParticiple}</b>`)
     );
   });
 }
 
-function existLocalStorage(item) {
-  if (localStorage.getItem(item)) return true;
-  else return false;
+function main() {
+  $("body").append(createDatalist(dataVerbs));
 }
 
-function getVerb(verb) {
-  let prueba = dataVerbs.find(function (objVerb) {
-    return objVerb.data.es.find(function (item) {
-      return item == verb;
-    });
-    //console.log(objVerb.data.es);
+function createDatalist(dataVerbs) {
+  let datalist = $("<datalist>", {
+    id: "dataList-verbs",
+    class: "dataList-verbs",
   });
 
-  if (prueba) return prueba;
+  $(dataVerbs).each(function (idx, obj) {
+    $(obj.data.es).each(function (idx, item) {
+      datalist.append($("<option>").val(item));
+    });
+  });
+
+  return datalist;
 }
 
 inicio();
