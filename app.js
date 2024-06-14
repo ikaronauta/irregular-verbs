@@ -9,7 +9,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore.js";
 import { getAllDocs } from "./modules/fb/firebase.js";
 import { firebaseConfig } from "./data/fbdata.js";
-import { existLocalStorage, getVerb } from "./modules/core/main.js";
+import { existLocalStorage, getVerb, getVerbs } from "./modules/core/main.js";
 
 let date;
 let dataVerbs = [];
@@ -39,29 +39,40 @@ async function inicio() {
     console.log("Información cargada con exito !!!");
   }
 
-  main();
+  //main();
 }
 
 function initEventListeners() {
-  $("#verb").on("keyup", function () {
-    let data = getVerb(dataVerbs, this.value.toLowerCase());
+  $("#verb").on("keyup", function (e) {
+    if (this.value.length < 3) return;
+
+    let data = getVerbs(dataVerbs, this.value.toLowerCase());
+    //let data = getVerb(dataVerbs, this.value.toLowerCase());
+
+    loadDataList(data);
+
     console.log(data);
 
-    if (!data) return;
-
     $("#data").empty();
-    $("#data").append($("<p>").html(`Verb: <b>${data.data.base}</b>`));
+
+    if (data.length != 1) return;
+
+    $("#data").append($("<p>").html(`Verb: <b>${data[0].data.base}</b>`));
     $("#data").append(
-      $("<p>").html(`Simple Past: <b>${data.data.pastSimple}</b>`)
+      $("<p>").html(`Simple Past: <b>${data[0].data.pastSimple}</b>`)
     );
     $("#data").append(
-      $("<p>").html(`Participle Past: <b>${data.data.pastParticiple}</b>`)
+      $("<p>").html(`Participle Past: <b>${data[0].data.pastParticiple}</b>`)
     );
+    if (e.key != "Backspace" && e.key != "Delete")
+      $("#verb").val(data[0].found);
   });
 }
 
-function main() {
-  $("body").append(createDatalist(dataVerbs));
+function loadDataList(data) {
+  if ($("datalist").length > 0) $("datalist").remove();
+
+  $("body").append(createDatalist(data));
 }
 
 function createDatalist(dataVerbs) {
