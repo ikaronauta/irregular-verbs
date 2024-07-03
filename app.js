@@ -27,16 +27,21 @@ async function inicio() {
     dataVerbs = JSON.parse(localStorage.getItem(`${date}-data`));
   } else {
     console.log("Consultando información...");
-    let data = await getAllDocs(db);
 
-    data.forEach((doc) => {
-      dataVerbs.push({
-        id: doc.id,
-        data: doc.data(),
+    try {
+      let data = await getAllDocs(db);
+
+      data.forEach((doc) => {
+        dataVerbs.push({
+          id: doc.id,
+          data: doc.data(),
+        });
       });
-    });
-    localStorage.setItem(`${date}-data`, JSON.stringify(dataVerbs));
-    console.log("Información cargada con exito !!!");
+      localStorage.setItem(`${date}-data`, JSON.stringify(dataVerbs));
+      console.log("Información cargada con exito !!!");
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   //main();
