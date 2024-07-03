@@ -4,15 +4,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/main.css">
     <title>Irregular Verbs</title>
 </head>
 
 <body>
-    <label for="verb"></label>
-    <input type="text" list="dataList-verbs" name="verb" id="verb"><br><br>
-    <!-- <button id="send">Get</button> -->
+    <div class="tabs">
+        <div class="tabSection" data-tab="home">Home</div>
+        <div class="tabSection" data-tab="verbs">Verbs</div>
+        <div class="tabSection" data-tab="contact">Contact</div>
+    </div>
 
-    <div id="data"></div>
+    <div class="container-section" id="home">
+        <div class="container-home">
+            <div class="up">
+                <input type="text" list="dataList-verbs" name="verb" id="verb">
+            </div>
+
+            <div class="down">
+                <div id="data"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="container-section" id="verbs" style="display: none;">Verbs</div>
+    <div class="container-section" id="contact" style="display: none;">Contact</div>
+
 
     <script src="libs/jQuery_3.7.1.js"></script>
     <script type="module" src="app.js"></script>
