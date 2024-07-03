@@ -43,6 +43,15 @@ async function inicio() {
 }
 
 function initEventListeners() {
+  $(".tabSection").on("click", function () {
+    let value = $(this).data("tab");
+
+    $(".container-section").each(function (idx, element) {
+      if (value == $(element).attr("id")) $(element).show();
+      else $(element).hide();
+    });
+  });
+
   $("#verb").on("keyup", function (e) {
     if (this.value.length < 3) return;
 
