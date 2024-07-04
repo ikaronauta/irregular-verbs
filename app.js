@@ -25,6 +25,7 @@ async function inicio() {
 
   if (existLocalStorage(`${date}-data`)) {
     dataVerbs = JSON.parse(localStorage.getItem(`${date}-data`));
+    loadDataList(dataVerbs);
   } else {
     console.log("Consultando información...");
 
@@ -38,6 +39,7 @@ async function inicio() {
         });
       });
       localStorage.setItem(`${date}-data`, JSON.stringify(dataVerbs));
+      loadDataList(data);
       console.log("Información cargada con exito !!!");
     } catch (error) {
       console.error(error);
@@ -58,12 +60,10 @@ function initEventListeners() {
   });
 
   $("#verb").on("keyup", function (e) {
-    if (this.value.length < 3) return;
+    //if (this.value.length < 3) return;
 
     let data = getVerbs(dataVerbs, this.value.toLowerCase());
     //let data = getVerb(dataVerbs, this.value.toLowerCase());
-
-    loadDataList(data);
 
     console.log(data);
 
