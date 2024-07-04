@@ -39,7 +39,7 @@ async function inicio() {
         });
       });
       localStorage.setItem(`${date}-data`, JSON.stringify(dataVerbs));
-      loadDataList(data);
+      loadDataList(dataVerbs);
       console.log("Información cargada con exito !!!");
     } catch (error) {
       console.error(error);
