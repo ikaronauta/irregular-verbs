@@ -60,7 +60,9 @@ function initEventListeners() {
   });
 
   $("#verb").on("keyup", function (e) {
-    //if (this.value.length < 3) return;
+    //if (this.value.length < 2) return;
+
+    if (e.key == "Backspace" || e.key == "Delete") return;
 
     let data = getVerbs(dataVerbs, this.value.toLowerCase());
     //let data = getVerb(dataVerbs, this.value.toLowerCase());
