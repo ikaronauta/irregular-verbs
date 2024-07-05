@@ -73,9 +73,7 @@ function initEventListeners() {
 
     //let data = getVerb(dataVerbs, this.value.toLowerCase());
 
-    if (data.length != 1) {
-      return;
-    } else {
+    if (data.length == 1 && $("#verb").val() == data[0].found) {
       $("#suggestions").empty();
       showResult(e, data);
     }
@@ -110,8 +108,8 @@ function showResult(event, data) {
   $("#data").append(
     $("<p>").html(`Participle Past: <b>${data[0].data.pastParticiple}</b>`)
   );
-  if (event.key != "Backspace" && event.key != "Delete")
-    $("#verb").val(data[0].found);
+  // if (event.key != "Backspace" && event.key != "Delete")
+  //   $("#verb").val(data[0].found);
 }
 
 function loadDataList(data) {
