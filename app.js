@@ -62,6 +62,8 @@ function initEventListeners() {
   $("#verb").on("keyup", function (e) {
     //if (this.value.length < 2) return;
 
+    alert(e.key);
+
     if (e.key == "Backspace" || e.key == "Delete") return;
 
     let data = getVerbs(dataVerbs, this.value.toLowerCase());
