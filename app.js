@@ -73,8 +73,11 @@ function initEventListeners() {
 
     //let data = getVerb(dataVerbs, this.value.toLowerCase());
 
-    if (data.length == 1 && $("#verb").val() == data[0].found) {
-      $("#suggestions").empty();
+    if (
+      data.find((x) => {
+        return x.found == $("#verb").val();
+      })
+    ) {
       showResult(e, data);
     }
   });
