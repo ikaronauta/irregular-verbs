@@ -8,6 +8,46 @@ html,
 body {
     width: 100%;
     height: 100vh;
+    font-family: "Quicksand", Courier, sans-serif;
+}
+
+.no-select {
+    user-select: none;
+    /* Standard syntax */
+    -webkit-user-select: none;
+    /* Chrome, Safari, Opera */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
+}
+
+#verb {
+    padding: 1rem;
+    border-radius: 10px;
+    font-size: 2rem;
+    width: 20rem;
+}
+
+.suggestions {
+    border: 1px solid #ccc;
+    border-radius: 0 0 5px 5px;
+    border-top: none;
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 99;
+    background-color: white;
+    width: 20rem;
+    position: absolute;
+}
+
+.item-suggestions {
+    padding: 0.25rem 1rem 0.25rem 1rem;
+    cursor: pointer;
+}
+
+.item-suggestions:hover {
+    background-color: #ddd;
 }
 
 .container-section {
@@ -53,15 +93,19 @@ body {
 
 .up {
     width: 100%;
-    height: 10vh;
+    height: 15vh;
 
-    display: flex;
+    /* display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column; */
 }
 
 .down {
     width: 100%;
     height: 100%;
 
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="css/main.css">
     <title>Irregular Verbs</title>
 </head>
@@ -18,7 +19,8 @@
     <div class="container-section" id="home">
         <div class="container-home">
             <div class="up">
-                <input type="text" list="dataList-verbs" name="verb" id="verb">
+                <input type="text" list="dataList-verbs" name="verb" id="verb" autocomplete="off">
+                <div id="suggestions" class="suggestions"></div>
             </div>
 
             <div class="down">

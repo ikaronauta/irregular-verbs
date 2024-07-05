@@ -25,7 +25,7 @@ async function inicio() {
 
   if (existLocalStorage(`${date}-data`)) {
     dataVerbs = JSON.parse(localStorage.getItem(`${date}-data`));
-    loadDataList(dataVerbs);
+    //loadDataList(dataVerbs);
   } else {
     console.log("Consultando información...");
 
@@ -39,7 +39,7 @@ async function inicio() {
         });
       });
       localStorage.setItem(`${date}-data`, JSON.stringify(dataVerbs));
-      loadDataList(dataVerbs);
+      //loadDataList(dataVerbs);
       console.log("Información cargada con exito !!!");
     } catch (error) {
       console.error(error);
@@ -60,29 +60,58 @@ function initEventListeners() {
   });
 
   $("#verb").on("keyup", function (e) {
-    //if (this.value.length < 2) return;
-
-    if (e.key == "Backspace" || e.key == "Delete") return;
-
-    let data = getVerbs(dataVerbs, this.value.toLowerCase());
-    //let data = getVerb(dataVerbs, this.value.toLowerCase());
-
-    console.log(data);
-
     $("#data").empty();
 
-    if (data.length != 1) return;
+    if (this.value.length < 2) {
+      $("#suggestions").empty();
+      return;
+    }
 
-    $("#data").append($("<p>").html(`Verb: <b>${data[0].data.base}</b>`));
-    $("#data").append(
-      $("<p>").html(`Simple Past: <b>${data[0].data.pastSimple}</b>`)
-    );
-    $("#data").append(
-      $("<p>").html(`Participle Past: <b>${data[0].data.pastParticiple}</b>`)
-    );
-    if (e.key != "Backspace" && e.key != "Delete")
-      $("#verb").val(data[0].found);
+    let data = getVerbs(dataVerbs, this.value.toLowerCase());
+
+    loadSuggestions(data);
+
+    //let data = getVerb(dataVerbs, this.value.toLowerCase());
+
+    if (data.length != 1) {
+      return;
+    } else {
+      $("#suggestions").empty();
+      showResult(e, data);
+    }
   });
+}
+
+function loadSuggestions(data) {
+  $("#suggestions").empty();
+
+  $(data).each(function (idx, obj) {
+    $(obj.data.es).each(function (idx, item) {
+      $("#suggestions").append(
+        $("<div>", {
+          class: "item-suggestions no-select",
+          text: item,
+        }).on("click", function () {
+          $("#verb").val($(this).text());
+          $("#verb").trigger("keyup");
+        })
+      );
+    });
+  });
+}
+
+function showResult(event, data) {
+  if (event.key == "Backspace" || event.key == "Delete") return;
+
+  $("#data").append($("<p>").html(`Verb: <b>${data[0].data.base}</b>`));
+  $("#data").append(
+    $("<p>").html(`Simple Past: <b>${data[0].data.pastSimple}</b>`)
+  );
+  $("#data").append(
+    $("<p>").html(`Participle Past: <b>${data[0].data.pastParticiple}</b>`)
+  );
+  if (event.key != "Backspace" && event.key != "Delete")
+    $("#verb").val(data[0].found);
 }
 
 function loadDataList(data) {
