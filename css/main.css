@@ -32,6 +32,9 @@ body {
     height: 2rem;
     position: fixed;
     bottom: 0;
+    left: 0; /* Asegura que se alinee correctamente */
+    display: -moz-box; /* Compatibilidad con navegadores antiguos */
+    display: -webkit-box;
     display: flex;
     flex-flow: row nowrap;
 }
@@ -39,7 +42,9 @@ body {
 .tabSection {
     flex: 1;
     cursor: pointer;
-    display: flex;
+    display: -moz-box; /* Compatibilidad con navegadores antiguos */
+    display: -webkit-box; /* Compatibilidad con navegadores antiguos */
+    display: flex; /* Comportamiento estándar */
     justify-content: center;
     align-items: center;
     position: relative;
