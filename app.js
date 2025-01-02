@@ -106,6 +106,7 @@ function loadSuggestions(data) {
         }).on("click", function () {
           $("#verb").val($(this).text());
           $("#verb").trigger("keyup");
+          $("#suggestions").empty();
         })
       );
     });
