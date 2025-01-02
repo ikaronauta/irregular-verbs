@@ -53,9 +53,20 @@ function initEventListeners() {
   $(".tabSection").on("click", function () {
     let value = $(this).data("tab");
 
+    $('.tabSection').removeClass('active');
+
     $(".container-section").each(function (idx, element) {
-      if (value == $(element).attr("id")) $(element).show();
-      else $(element).hide();
+      if (value == $(element).attr("id")) {
+        $(element).show();
+        $(`[data-tab="${value}"]`).addClass('active');
+
+        if(value == 'home')
+          $(`[data-tab="home"]`).find('img').attr('src', './assets/icons/home_1.png');
+        else 
+          $(`[data-tab="home"]`).find('img').attr('src', './assets/icons/home_2.png')
+      } else {
+        $(element).hide();
+      }
     });
   });
 
